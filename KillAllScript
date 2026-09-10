@@ -1,10 +1,9 @@
 -- // Services
 local Players = game:GetService("Players")
 local CoreGui = game:GetService("CoreGui")
-local TweenService = game:GetService("TweenService")
 local LocalPlayer = Players.LocalPlayer
 
--- // ScreenGui Oluşturma
+-- // ScreenGui Creation
 local ScreenGui = Instance.new("ScreenGui")
 ScreenGui.Name = "LightningHub_KeySystem"
 ScreenGui.ResetOnSpawn = false
@@ -17,11 +16,11 @@ if not success then
     ScreenGui.Parent = LocalPlayer:WaitForChild("PlayerGui")
 end
 
--- // Ana Panel (Yuvarlak Köşeli, Sarı Çerçeveli, Kapatılamaz)
+-- // Main Panel
 local MainFrame = Instance.new("Frame")
 MainFrame.Name = "MainFrame"
-MainFrame.Size = UDim2.new(0, 420, 0, 260)
-MainFrame.Position = UDim2.new(0.5, -210, 0.5, -130)
+MainFrame.Size = UDim2.new(0, 420, 0, 310)
+MainFrame.Position = UDim2.new(0.5, -210, 0.5, -155)
 MainFrame.BackgroundColor3 = Color3.fromRGB(18, 18, 18)
 MainFrame.BorderSizePixel = 0
 MainFrame.Parent = ScreenGui
@@ -31,11 +30,11 @@ UICorner.CornerRadius = UDim.new(0, 12)
 UICorner.Parent = MainFrame
 
 local UIStroke = Instance.new("UIStroke")
-UIStroke.Color = Color3.fromRGB(255, 215, 0) -- Sarı Çerçeve
+UIStroke.Color = Color3.fromRGB(255, 215, 0)
 UIStroke.Thickness = 2
 UIStroke.Parent = MainFrame
 
--- // Başlık (LIGHTNINGHUB KILL ALL COMMAND)
+-- // Title
 local Title = Instance.new("TextLabel")
 Title.Size = UDim2.new(1, 0, 0, 45)
 Title.BackgroundTransparency = 1
@@ -45,24 +44,24 @@ Title.TextSize = 15
 Title.Font = Enum.Font.GothamBold
 Title.Parent = MainFrame
 
--- // Bilgilendirme ve Discord Yazısı
+-- // Info and Discord Text
 local InfoLabel = Instance.new("TextLabel")
 InfoLabel.Size = UDim2.new(1, -30, 0, 45)
 InfoLabel.Position = UDim2.new(0, 15, 0, 45)
 InfoLabel.BackgroundTransparency = 1
-InfoLabel.Text = "Bu scripti kullanmak icin sifreyi girmeniz gerek. Discord:\nhttps://discord.gg/6amNFyqze"
+InfoLabel.Text = "Please enter the key to use this script. Discord:\nhttps://discord.gg/5KmPpKbek"
 InfoLabel.TextColor3 = Color3.fromRGB(200, 200, 200)
 InfoLabel.TextSize = 12
 InfoLabel.Font = Enum.Font.Gotham
 InfoLabel.TextWrapped = true
 InfoLabel.Parent = MainFrame
 
--- // Şifre Giriş Kutusu (TextBox)
+-- // Password Input Box
 local TextBox = Instance.new("TextBox")
 TextBox.Size = UDim2.new(0, 260, 0, 38)
 TextBox.Position = UDim2.new(0.5, -130, 0, 105)
 TextBox.BackgroundColor3 = Color3.fromRGB(28, 28, 28)
-TextBox.PlaceholderText = "Sifreyi girin..."
+TextBox.PlaceholderText = "Enter key..."
 TextBox.Text = ""
 TextBox.TextColor3 = Color3.fromRGB(255, 255, 255)
 TextBox.PlaceholderColor3 = Color3.fromRGB(100, 100, 100)
@@ -80,12 +79,12 @@ BoxStroke.Color = Color3.fromRGB(80, 80, 80)
 BoxStroke.Thickness = 1
 BoxStroke.Parent = TextBox
 
--- // Giriş / Kontrol Butonu
+-- // Check Button
 local CheckButton = Instance.new("TextButton")
 CheckButton.Size = UDim2.new(0, 120, 0, 32)
-CheckButton.Position = UDim2.new(0.5, -60, 0, 155)
+CheckButton.Position = UDim2.new(0.5, -125, 0, 155)
 CheckButton.BackgroundColor3 = Color3.fromRGB(255, 215, 0)
-CheckButton.Text = "Sifreyi Kontrol Et"
+CheckButton.Text = "Check Key"
 CheckButton.TextColor3 = Color3.fromRGB(0, 0, 0)
 CheckButton.TextSize = 12
 CheckButton.Font = Enum.Font.GothamBold
@@ -95,7 +94,27 @@ local BtnCorner = Instance.new("UICorner")
 BtnCorner.CornerRadius = UDim.new(0, 8)
 BtnCorner.Parent = CheckButton
 
--- // Alt Bilgi (Prepared by)
+-- // Get Key Button
+local GetKeyButton = Instance.new("TextButton")
+GetKeyButton.Size = UDim2.new(0, 120, 0, 32)
+GetKeyButton.Position = UDim2.new(0.5, 5, 0, 155)
+GetKeyButton.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+GetKeyButton.Text = "Get Key"
+GetKeyButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+GetKeyButton.TextSize = 12
+GetKeyButton.Font = Enum.Font.GothamBold
+GetKeyButton.Parent = MainFrame
+
+local GetKeyCorner = Instance.new("UICorner")
+GetKeyCorner.CornerRadius = UDim.new(0, 8)
+GetKeyCorner.Parent = GetKeyButton
+
+local GetKeyStroke = Instance.new("UIStroke")
+GetKeyStroke.Color = Color3.fromRGB(255, 215, 0)
+GetKeyStroke.Thickness = 1
+GetKeyStroke.Parent = GetKeyButton
+
+-- // Credit
 local Credit = Instance.new("TextLabel")
 Credit.Size = UDim2.new(1, 0, 0, 25)
 Credit.Position = UDim2.new(0, 0, 1, -28)
@@ -106,27 +125,50 @@ Credit.TextSize = 11
 Credit.Font = Enum.Font.GothamItalic
 Credit.Parent = MainFrame
 
--- // Buton Fonksiyonu
+-- // Correct Key Definition (Yukarı taşındı ki fonksiyon hata vermesin)
+local correctKey = "halilibrahimseviml1"
+
+-- // Get Key Functionality (Alternatif kopyalama ve ekrana yazı yazdırma)
+GetKeyButton.MouseButton1Click:Connect(function()
+    -- Panoya kopyalama (Farklı executor fonksiyonları denendi)
+    local copied = false
+    if syn and syn.write_clipboard then
+        syn.write_clipboard("https://discord.gg/5KmPpKbek")
+        copied = true
+    elseif setclipboard then
+        pcall(function() setclipboard("https://discord.gg/5KmPpKbek") end)
+        copied = true
+    elseif toclipboard then
+        pcall(function() toclipboard("https://discord.gg/5KmPpKbek") end)
+        copied = true
+    end
+    
+    -- Bildirim yerine InfoLabel üzerinden görsel geri bildirim (Mobil uyumlu)
+    InfoLabel.Text = "Link copied! Paste it into browser:\nhttps://discord.gg/5KmPpKbek"
+    InfoLabel.TextColor3 = Color3.fromRGB(0, 255, 255)
+    task.wait(3)
+    InfoLabel.Text = "Please enter the key to use this script. Discord:\nhttps://discord.gg/5KmPpKbek"
+    InfoLabel.TextColor3 = Color3.fromRGB(200, 200, 200)
+end)
+
+-- // Check Button Functionality
 CheckButton.MouseButton1Click:Connect(function()
     if TextBox.Text == correctKey then
-        InfoLabel.Text = "Basariyla giris yapildi! Script yukleniyor..."
+        InfoLabel.Text = "Successfully logged in! Loading script..."
         InfoLabel.TextColor3 = Color3.fromRGB(0, 255, 0)
         TextBox.Visible = false
         CheckButton.Visible = false
+        GetKeyButton.Visible = false
         
         task.wait(1)
         ScreenGui:Destroy()
         
-        -- Buraya asil script kodlarini ekleyebilirsin
-        print("LightningHub Kill All aktif edildi!")
+        print("LightningHub Kill All activated!")
     else
-        InfoLabel.Text = "Hatali sifre! Tekrar deneyin."
+        InfoLabel.Text = "Wrong key! Try again."
         InfoLabel.TextColor3 = Color3.fromRGB(255, 60, 60)
         task.wait(1.5)
-        InfoLabel.Text = "Bu scripti kullanmak icin sifreyi girmeniz gerek. Discord:\nhttps://discord.gg/6amNFyqze"
+        InfoLabel.Text = "Please enter the key to use this script. Discord:\nhttps://discord.gg/5KmPpKbek"
         InfoLabel.TextColor3 = Color3.fromRGB(200, 200, 200)
     end
 end)
-
--- // Doğru Şifre Tanımlaması (En Altta)
-local correctKey = "halilibrahimseviml1"
